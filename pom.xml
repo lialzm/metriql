@@ -4,7 +4,7 @@
 
     <groupId>com.metriql</groupId>
     <artifactId>metriql</artifactId>
-    <version>0.13-SNAPSHOT</version>
+    <version>0.14-SNAPSHOT</version>
 
     <scm>
         <connection>scm:git:https://github.com/metriql/metriql.git</connection>
@@ -675,6 +675,8 @@
                         </goals>
                         <configuration>
                             <ignoredUnusedDeclaredDependencies>
+                                <ignoredUnusedDeclaredDependency>io.swagger:swagger-core
+                                </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>io.sentry:sentry-log4j2
                                 </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.apache.logging.log4j:log4j-jul
