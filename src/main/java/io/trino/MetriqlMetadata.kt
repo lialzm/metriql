@@ -41,8 +41,14 @@ import java.util.Optional
 class MetriqlMetadata(private val datasetService: IDatasetService) : SystemTablesProvider {
 
     private fun getModels(session: ConnectorSession): List<Dataset> {
-        val auth = JsonHelper.read(session.identity.extraCredentials["metriql"], ProjectAuth::class.java)
-        return datasetService.list(auth).filter { !it.hidden }
+        var metriql_auth=session.identity.extraCredentials["metriql"]
+        if (metriql_auth==null){
+            return datasetService.list(ProjectAuth.systemUser("", session.user)).filter { !it.hidden }
+        }else{
+            val auth = JsonHelper.read(session.identity.extraCredentials["metriql"], ProjectAuth::class.java)
+            return datasetService.list(auth).filter { !it.hidden }
+        }
+
     }
 
     override fun listSystemTables(session: ConnectorSession): Set<SystemTable> {
