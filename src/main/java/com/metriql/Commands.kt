@@ -120,6 +120,7 @@ open class Commands(help: String? = null) : CliktCommand(help = help ?: "", prin
                 exitProcess(1)
             }
 
+            // 获取数据源
             val dataSource = WarehouseLocator.getDataSource(config)
 
             val successfulCounts = AtomicInteger()
