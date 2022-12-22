@@ -109,7 +109,7 @@ export default {
         }
 
         this.databases.loading = true
-        request.post('/api/v0/integration/metabase', {
+        request.post('/api/v1/integration/metabase', {
           action: 'list-databases',
           parameters: this.credentials
         }).then(response => {
@@ -121,7 +121,7 @@ export default {
     },
     sync () {
       this.syncing = true
-      request.post('/api/v0/integration/metabase', {action: 'sync-database', parameters: this.credentials})
+      request.post('/api/v1/integration/metabase', {action: 'sync-database', parameters: this.credentials})
         .then(response => {
           this.$message({
             type: 'success',

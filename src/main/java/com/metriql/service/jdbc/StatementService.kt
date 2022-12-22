@@ -87,6 +87,7 @@ class StatementService(
     fun query(request: RakamHttpRequest, @Named("userContext") auth: ProjectAuth) {
         request.bodyHandler { body ->
             val sql = String(body.readAllBytes())
+            println("exec sql")
             println("$sql")
 
             val sessionContext = createSessionContext(request)
@@ -95,6 +96,7 @@ class StatementService(
 
             val mode = sessionContext.systemProperties?.get(QUERY_TYPE_PROPERTY.name) ?: QUERY_TYPE_PROPERTY.defaultValue
             val reportType = ReportLocator.getReportType(mode)
+            println("reportType==="+reportType)
 
             val rawStmt = try {
                 runner.runner.sqlParser.createStatement(sql, defaultParsingOptions)
