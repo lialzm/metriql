@@ -144,8 +144,8 @@ class SqlToSegmentation @Inject constructor(val segmentationService: Segmentatio
         val (projectionOrders, orders) = parseOrders(rewriter, references, select.selectItems, projectionColumns, orderBy)
         val query = SegmentationQuery(
             model.name,
-            measures.toSet().map { Recipe.FieldReference.fromName(it) },
             dimensions.toSet().map { Recipe.FieldReference.fromName(it) },
+            measures.toSet().map { Recipe.FieldReference.fromName(it) },
             FilterValue.NestedFilter(FilterValue.NestedFilter.Connector.AND, whereFiltersPushdown + havingFiltersPushdown),
             limit = parseLimit(limit.orElse(null)),
             orders = orders
