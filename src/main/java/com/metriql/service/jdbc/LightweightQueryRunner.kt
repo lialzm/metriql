@@ -63,13 +63,20 @@ class LightweightQueryRunner(private val datasetService: IDatasetService) {
 
         override fun run() {
             try {
-                val query = runner.executeWithPlan(getId(), sessionContext, sql, WarningCollector.NOOP)
+                println("task")
+                val sql2=sql.replace("ods_sample_tags_rel","model_tag_dbt_ods_sample_tags_rel").replace("ods_icom_sample_screen","model_pg_transform_ods_icom_sample_screen")
+                println(sql2)
+                println("task")
+                val query = runner.executeWithPlan(getId(), sessionContext, sql2, WarningCollector.NOOP)
                 val columnNames = (query.queryPlan?.root as? OutputNode)?.columnNames
                 val columns =
                     query.materializedResult?.types?.mapIndexed { index, it ->
                         QueryResult.QueryColumn(columnNames?.get(index) ?: "_col$index", index, getMetriqlType(it))
                     } ?: listOf()
                 val data = query.materializedResult?.materializedRows?.map { it.fields } ?: listOf()
+                println("data")
+                println(data)
+                println("data")
                 setResult(QueryResult(columns, data, null, mapOf(QUERY_TYPE to query.updateType), query.responseHeaders))
             } catch (e: Exception) {
                 val fallbackErrorMessage = "Error running metadata query"

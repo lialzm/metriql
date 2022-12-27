@@ -104,13 +104,15 @@ class StatementService(
                 // since it's a trino query, let the executor handle the exception
                 null
             }
+            println(rawStmt)
 
             val (statement, parameters) = if (rawStmt is Execute) {
+                println(rawStmt.name.value)
                 val ps = sessionContext.preparedStatements[rawStmt.name.value]
                 runner.runner.sqlParser.createStatement(ps, defaultParsingOptions) to rawStmt.parameters
             } else rawStmt to null
 
-            val task = if (reportType == MqlReportType && isMetadataQuery(statement, "metriql")) {
+            val task = if (isMetadataQuery(statement, "metriql")) {
                 runner.createTask(auth, sessionContext, sql)
             } else {
                 val dataSource = deployment.getDataSource(auth)
@@ -119,6 +121,7 @@ class StatementService(
                 val finalSql = if (rawStmt is Execute) {
                     sessionContext.preparedStatements[rawStmt.name.value]!!
                 } else sql
+                println("finalSql==="+finalSql)
 
                 val options = when (reportType) {
                     MqlReportType -> MqlQuery(finalSql, null, parameters, null)
