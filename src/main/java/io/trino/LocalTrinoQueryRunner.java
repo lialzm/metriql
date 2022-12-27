@@ -347,16 +347,6 @@ public class LocalTrinoQueryRunner {
 
     public MaterializedResultWithPlanHeader executeWithPlan(UUID queryId, HttpRequestSessionContext sessionContext, String sql, WarningCollector warningCollector) {
         String queryIdForTrino = queryId.toString().replace('-', '_');
-        //反射修改catlog
-        try {
-            Field nameField = sessionContext.getClass().getDeclaredField("catalog");
-            nameField.setAccessible(true);
-            nameField.set(sessionContext, "metriql");
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
         Session session = sessionSupplier.createSession(QueryId.valueOf(queryIdForTrino), sessionContext);
         return inTransaction(session, transactionSession -> executeInternal(transactionSession, sql, warningCollector));
     }
@@ -628,12 +618,6 @@ public class LocalTrinoQueryRunner {
                 costCalculator,
                 warningCollector);
 
-        System.out.println("=========");
-        System.out.println(session.getCatalog());
-        System.out.println(preparedQuery.getPrepareSql());
-        System.out.println(preparedQuery.getParameters());
-//        System.out.println(preparedQuery.getStatement().getChildren().get(0));
-        System.out.println("=========");
         Analysis analysis = analyzer.analyze(preparedQuery.getStatement());
         // make LocalQueryRunner always compute plan statistics for test purposes
         return logicalPlanner.plan(analysis, OPTIMIZED_AND_VALIDATED);

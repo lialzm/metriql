@@ -108,7 +108,6 @@ class QueryGeneratorContext(
 
     override fun getModelDimension(dimensionName: DimensionName, datasetName: DatasetName): ModelDimension {
         val model = getModel(datasetName)
-        println("getModelDimension")
 
         val mappingDimension = dimensionName.getMappingDimensionIfValid()
         val dimensionNameNormalized = (

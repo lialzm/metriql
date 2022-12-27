@@ -93,7 +93,6 @@ abstract class ANSISQLMetriqlBridge : WarehouseMetriqlBridge {
         contextDatasetName: DatasetName,
         context: IQueryGeneratorContext
     ): RenderedFilter {
-        println("renderFilter")
         return when (filter) {
             is FilterValue.NestedFilter -> {
                 val renderedSubFilters = filter.filters.map { renderFilter(it, contextDatasetName, context) }
@@ -232,7 +231,6 @@ abstract class ANSISQLMetriqlBridge : WarehouseMetriqlBridge {
         extraFilters: List<FilterValue>?,
         modelAlias: String?
     ): WarehouseMetriqlBridge.RenderedField {
-        println("renderMeasure")
         val (modelMeasure, modelRelation) = if (relationName != null) {
             if (contextDatasetName == null) {
                 throw IllegalStateException("Context model name is required when measure has a relation to join")
@@ -462,9 +460,6 @@ abstract class ANSISQLMetriqlBridge : WarehouseMetriqlBridge {
         relationName: RelationName?,
         context: IQueryGeneratorContext,
     ): Pair<ModelDimension, ModelRelation?> {
-        println("generateModelDimension")
-//        var e=Exception("this is log")
-//        e.printStackTrace()
         return if (relationName != null) {
             val modelRelation = context.getRelation(contextDatasetName, relationName)
             // Get the dimensions model-name from joins target model
@@ -529,7 +524,6 @@ abstract class ANSISQLMetriqlBridge : WarehouseMetriqlBridge {
         context: IQueryGeneratorContext,
         modelRelation: ModelRelation,
     ): String {
-        println("generateJoinStatement")
         val relation = modelRelation.relation
         val joinType = when (relation.joinType) {
             Dataset.Relation.JoinType.LEFT_JOIN -> "LEFT JOIN"

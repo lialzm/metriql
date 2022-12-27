@@ -13,7 +13,15 @@ import com.metriql.util.MetriqlException
 import com.metriql.util.toSnakeCase
 import io.netty.handler.codec.http.HttpResponseStatus
 import io.trino.connector.system.SystemTablesProvider
-import io.trino.spi.connector.*
+import io.trino.spi.connector.ColumnMetadata
+import io.trino.spi.connector.ConnectorPageSource
+import io.trino.spi.connector.ConnectorSession
+import io.trino.spi.connector.ConnectorTableMetadata
+import io.trino.spi.connector.ConnectorTransactionHandle
+import io.trino.spi.connector.InMemoryRecordSet
+import io.trino.spi.connector.RecordCursor
+import io.trino.spi.connector.SchemaTableName
+import io.trino.spi.connector.SystemTable
 import io.trino.spi.predicate.TupleDomain
 import io.trino.spi.type.ArrayType
 import io.trino.spi.type.BigintType
@@ -90,8 +98,7 @@ class MetriqlMetadata(private val datasetService: IDatasetService) : SystemTable
     class ModelProxy(val datasets: List<Dataset>, val dataset: Dataset, val distinct: Boolean = false) : SystemTable {
 
         override fun pageSource(transactionHandle: ConnectorTransactionHandle, session: ConnectorSession, constraint: TupleDomain<Int>): ConnectorPageSource {
-//            throw UnsupportedOperationException("Metadata queries doesn't support data processing")
-            return EmptyPageSource()
+            throw UnsupportedOperationException("Metadata queries doesn't support data processing")
         }
 
         override fun getDistribution() = SystemTable.Distribution.SINGLE_COORDINATOR
