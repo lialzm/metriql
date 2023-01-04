@@ -29,8 +29,8 @@ fun toCamelCase(value: String): String {
 
 fun getOperation(inferredType: FieldType?, operator: String): Pair<FieldType, Enum<*>> {
     val fieldType = try {
-        JsonHelper.convert(operator, FieldType.UNKNOWN.operatorClass.java)
-        FieldType.UNKNOWN
+        JsonHelper.convert(operator, inferredType!!.operatorClass.java)
+        inferredType
     } catch (e: Exception) {
         inferredType ?: throw MetriqlException("Type is required for operator $operator", HttpResponseStatus.BAD_REQUEST)
     }
